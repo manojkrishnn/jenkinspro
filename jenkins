@@ -10,7 +10,7 @@ node {
     stage ('BUILD-IMAGE') {
         sh 'docker build -t mano2105/project:1.0.0 .'
     }
-    stage ('IMAGE PUSH'){
+    stage (' IMAGE PUSH'){
         withCredentials([string( credentialsId: 'dockerID', variable: 'dockerPassword')]){
             sh 'docker login -u mano2105 -p ${dockerPassword}'
         }
