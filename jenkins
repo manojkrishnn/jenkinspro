@@ -1,0 +1,35 @@
+node {
+    stage ('SCM CHECKOUT') {
+        git 'https://github.com/manojkrishnn/my-app'
+    }
+    stage ('maven build'){
+        def mvnHome = tool name: 'maven3', type: 'maven'
+        sh "${mvnHome}/bin/mvn clean package"
+        sh 'mv target/myweb*.war target/newapp.war'
+    }
+    stage ('BUILD-IMAGE') {
+        sh 'docker build -t mano2105/project:1.0.0 .'
+    }
+    stage ('IMAGE PUSH'){
+        withCredentials([string( credentialsId: 'dockerID', variable: 'dockerPassword')]){
+            sh 'docker login -u mano2105 -p ${dockerPassword}'
+        }
+        sh 'docker push mano2105/project:1.0.0'
+    }
+    stage ('sonarqube test'){
+        def mvnHome = tool name: 'maven3', type: 'maven'
+        withSonarQubeEnv ('sonar') {
+            sh "${mvnHome}/bin/mvn sonar:sonar"
+        }
+    }
+    stage ('remove conatainer'){
+        try {
+            sh 'docker rm -f 4stcontainer'
+        }catch(error){
+            // do nothing if there is an exception
+        }
+        }
+    stage ('deployment'){
+        sh 'docker run -d --name 4stcontainer -p 8093:8080 mano2105/project:1.0.0'
+    }
+    
