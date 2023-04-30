@@ -24,12 +24,12 @@ node {
     }
     stage ('remove conatainer'){
         try {
-            sh 'docker rm -f 4stcontainer'
+            sh 'docker rm -f firststcontainer'
         }catch(error){
             // do nothing if there is an exception
         }
         }
     stage ('deployment'){
-        sh 'docker run -d --name 4stcontainer -p 8093:8080 mano2105/project:1.0.0'
+        sh 'docker run -d --name firststcontainer -p 8090:8080 mano2105/project:1.0.0'
     }
     
