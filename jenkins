@@ -1,6 +1,6 @@
 node {
     stage ('SCM CHECKOUT') {
-        git 'https://github.com/manojkrishnn/my-app'
+        git 'https://github.com/manojkrishnn/jenkinspro'
     }
     stage ('maven build'){
         def mvnHome = tool name: 'maven3', type: 'maven'
