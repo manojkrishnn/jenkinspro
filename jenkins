@@ -29,7 +29,7 @@ node {
             // do nothing if there is an exception
         }
         }
-    stage ('deployment'){
+    stage (' deployment'){
         sh 'docker run -d --name firststcontainer -p 8090:8080 mano2105/project:1.0.0'
     }
     
